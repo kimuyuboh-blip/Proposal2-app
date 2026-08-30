@@ -8,6 +8,8 @@ haptics, and a chained audio soundtrack for the payoff.
 No build step, no framework, no dependencies beyond one vendored script —
 just `index.html`, plain CSS, and plain JS.
 
+**Live:** https://kimuyuboh-blip.github.io/Proposal2-app/
+
 ## Running it locally
 
 Because the app loads audio/image assets via relative paths, open it through
