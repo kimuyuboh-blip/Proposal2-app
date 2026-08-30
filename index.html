@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>For You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Persistent global audio elements. These live outside the page sections
+     so navigating between "pages" (just show/hide of sections) never
+     recreates or restarts them. -->
+<audio id="instructions-audio" src="assets/audio/instructions.m4a" preload="auto"></audio>
+<audio id="heartfelt-audio" src="assets/audio/heartfelt_message.m4a" preload="auto"></audio>
+<audio id="song-audio" src="assets/audio/song.mp3" preload="auto"></audio>
+
+<main id="app">
+
+  <!-- PAGE 1 : Audio Setup & Instructions -->
+  <section class="page active" id="page-1" data-page="1">
+    <div class="page-inner page-inner--plain">
+      <div class="reveal-content">
+        <p class="eyebrow">before we begin</p>
+        <button id="play-me-btn" class="btn btn--primary" type="button">
+          <span class="btn__label">Play Me</span>
+        </button>
+        <p class="hint" id="instructions-hint">Scratch the surface to begin</p>
+      </div>
+      <canvas class="scratch-canvas" id="scratch-1" data-shimmer="false"></canvas>
+    </div>
+    <button class="btn btn--ghost btn--next" id="next-btn-1" type="button" hidden>
+      <span class="btn__label">Next</span>
+      <span class="btn__arrow" aria-hidden="true">&#8594;</span>
+    </button>
+  </section>
+
+  <!-- PAGE 2 : Photo + Text Hybrid -->
+  <section class="page" id="page-2" data-page="2">
+    <div class="page-inner page-inner--photo" style="background-image: url('assets/images/photo1.jpg');">
+      <div class="photo-overlay"></div>
+      <div class="reveal-content reveal-content--memory">
+        <p class="eyebrow">a memory, just for you</p>
+        <p class="memory-text">
+          I still think about the way you laughed that afternoon &mdash;
+          it's the small, ordinary moments with you that quietly became
+          my favorite ones.
+        </p>
+      </div>
+      <canvas class="scratch-canvas" id="scratch-2" data-shimmer="true"></canvas>
+    </div>
+    <button class="btn btn--ghost btn--next" id="next-btn-2" type="button" hidden>
+      <span class="btn__label">Next</span>
+      <span class="btn__arrow" aria-hidden="true">&#8594;</span>
+    </button>
+  </section>
+
+  <!-- PAGE 3 : The Layered Reveal -->
+  <section class="page" id="page-3" data-page="3">
+    <div class="page-inner page-inner--dark page-inner--text-left">
+      <div class="bg-photo bg-photo--contain" style="background-image: url('assets/images/loving.jpeg');"></div>
+      <div class="reveal-content reveal-content--quote reveal-content--side reveal-content--align-start">
+        <p class="quote-mark" aria-hidden="true">&#8220;</p>
+        <p class="quote-text">
+          Of all the paths I could have walked, I'm endlessly grateful
+          the one I chose led me to you.
+        </p>
+        <p class="quote-mark quote-mark--close" aria-hidden="true">&#8221;</p>
+      </div>
+      <canvas class="scratch-canvas" id="scratch-3" data-shimmer="true"></canvas>
+    </div>
+    <button class="btn btn--ghost btn--next" id="next-btn-3" type="button" hidden>
+      <span class="btn__label">Next</span>
+      <span class="btn__arrow" aria-hidden="true">&#8594;</span>
+    </button>
+  </section>
+
+  <!-- PAGE 4 : The Bold Question & Proposal -->
+  <section class="page" id="page-4" data-page="4">
+    <div class="page-inner page-inner--dark page-inner--final page-inner--text-right">
+      <div class="bg-photo" style="background-image: url('assets/images/us.jpeg');"></div>
+      <div class="reveal-content reveal-content--question reveal-content--side reveal-content--align-end" id="question-content">
+        <p class="question-text">Will you officially be<br>my girlfriend?</p>
+        <div class="question-buttons" id="question-buttons" hidden>
+          <button class="btn btn--yes" id="yes-btn" type="button">Yes</button>
+          <button class="btn btn--no" id="no-btn" type="button">No</button>
+        </div>
+      </div>
+
+      <div class="reveal-content reveal-content--victory reveal-content--side reveal-content--align-end" id="victory-content" hidden>
+        <p class="victory-emoji" aria-hidden="true">&#10084;</p>
+        <p class="victory-text">She said yes.</p>
+        <p class="victory-signoff">August 16 I met the love of my life for our first date.</p>
+      </div>
+
+      <canvas class="scratch-canvas" id="scratch-4" data-shimmer="true"></canvas>
+    </div>
+  </section>
+
+</main>
+
+<!-- Replay corner control, shared across pages 2-4 -->
+<button class="replay-btn" id="replay-btn" type="button" hidden aria-label="Replay voice note">
+  <span class="replay-btn__icon" aria-hidden="true">&#9835;</span>
+  <span class="replay-btn__label" id="replay-btn-label">Replay Voice Note</span>
+</button>
+
+<!-- Page progress indicator -->
+<nav class="page-dots" id="page-dots" aria-label="Page progress" hidden>
+  <span class="page-dot" data-dot="1"></span>
+  <span class="page-dot" data-dot="2"></span>
+  <span class="page-dot" data-dot="3"></span>
+  <span class="page-dot" data-dot="4"></span>
+</nav>
+
+<script src="js/vendor/confetti.browser.min.js"></script>
+<script src="js/audioEngine.js"></script>
+<script src="js/scratchCanvas.js"></script>
+<script src="js/confettiEffect.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
