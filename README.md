@@ -115,6 +115,14 @@ Accessibility notes:
   page. Deliberately excludes `assets/audio/*` — `<audio>` elements issue
   HTTP range requests to seek/buffer, which the Cache API doesn't serve
   correctly, so audio is left to the network as normal.
+- **No `Expires`/`Cache-Control` response headers**: GitHub Pages doesn't
+  support custom HTTP headers (no `.htaccess`, no `_headers` file) — it
+  serves everything with its own fixed short default. `sw.js` is the
+  practical substitute: on a repeat visit its cache-first strategy serves
+  CSS/JS/images with zero network requests, the same outcome a far-future
+  `Expires` header would give. The one thing to remember: bump
+  `CACHE_VERSION` in `sw.js` whenever a shell asset changes, or returning
+  visitors will keep getting the old cached copy indefinitely.
 
 ## Customizing
 
