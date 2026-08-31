@@ -6,7 +6,7 @@
  * playback/seeking instead of helping it. They're left to the network
  * (and the browser's own HTTP cache) as normal.
  */
-const CACHE_VERSION = 'for-you-v1';
+const CACHE_VERSION = 'for-you-v2';
 
 const APP_SHELL = [
   './',

@@ -320,6 +320,55 @@ button {
 }
 
 /* ==========================================================================
+   Floating heart bubbles (page 4 only)
+   Pure CSS transform/opacity animation — runs on the compositor thread, so
+   unlike the shimmer loop this costs effectively nothing even while
+   running. Still paused whenever page 4 isn't the active page, both to
+   avoid any needless work and so the hearts only start drifting once the
+   visitor actually gets there.
+   ========================================================================== */
+.heart-field {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.heart-bubble {
+  position: absolute;
+  bottom: -10%;
+  left: 0;
+  color: var(--color-rose);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  animation: heart-float 15s ease-in infinite;
+  animation-play-state: paused;
+  will-change: transform, opacity;
+}
+
+.page.active .heart-bubble {
+  animation-play-state: running;
+}
+
+@keyframes heart-float {
+  0% { transform: translate(0, 0) scale(0.8); opacity: 0; }
+  12% { opacity: 0.75; }
+  50% { transform: translate(var(--drift, 20px), -55vh) scale(1); }
+  85% { opacity: 0.55; }
+  100% { transform: translate(calc(var(--drift, 20px) * 2), -115vh) scale(0.9); opacity: 0; }
+}
+
+.heart-bubble:nth-child(1) { left: 6%;  font-size: 1.1rem; color: var(--color-rose-light); animation-duration: 12s; animation-delay: 0s; --drift: 24px; }
+.heart-bubble:nth-child(2) { left: 18%; font-size: 1.6rem; color: var(--color-gold);       animation-duration: 16s; animation-delay: 2s; --drift: -18px; }
+.heart-bubble:nth-child(3) { left: 32%; font-size: 0.9rem; color: var(--color-rose);       animation-duration: 13s; animation-delay: 5s; --drift: 16px; }
+.heart-bubble:nth-child(4) { left: 48%; font-size: 1.3rem; color: var(--color-gold-light); animation-duration: 18s; animation-delay: 1s; --drift: -22px; }
+.heart-bubble:nth-child(5) { left: 62%; font-size: 1.0rem; color: var(--color-rose-light); animation-duration: 15s; animation-delay: 4s; --drift: 20px; }
+.heart-bubble:nth-child(6) { left: 74%; font-size: 1.5rem; color: var(--color-rose);       animation-duration: 17s; animation-delay: 7s; --drift: -14px; }
+.heart-bubble:nth-child(7) { left: 86%; font-size: 1.1rem; color: var(--color-gold);       animation-duration: 14s; animation-delay: 3s; --drift: 18px; }
+.heart-bubble:nth-child(8) { left: 94%; font-size: 0.8rem; color: var(--color-rose-light); animation-duration: 19s; animation-delay: 6s; --drift: -20px; }
+
+/* ==========================================================================
    Scratch canvas
    ========================================================================== */
 .scratch-canvas {
@@ -743,5 +792,9 @@ button {
 
   .page {
     transform: none !important;
+  }
+
+  .heart-field {
+    display: none;
   }
 }
