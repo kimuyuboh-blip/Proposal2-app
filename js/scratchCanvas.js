@@ -22,6 +22,7 @@ class ScratchCanvas {
     this.dpr = Math.min(window.devicePixelRatio || 1, 2);
     this.isPointerDown = false;
     this.cleared = false;
+    this.hasProgress = false;
     this.lastPoint = null;
     this.gestureStart = null;
     this.rafId = null;
@@ -36,6 +37,20 @@ class ScratchCanvas {
     this._paintBase();
     this._attachEvents();
     this._makeKeyboardAccessible();
+
+    // The base paint above draws the label with the Playfair Display web
+    // font, but on a slow connection that font may not have finished
+    // downloading yet — canvas text is a static snapshot, so it would
+    // silently stick with the fallback serif forever. Repaint once the
+    // font is actually ready (a no-op if it already was).
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        // Repainting redraws the full opaque overlay, which would wipe out
+        // any scratching the visitor already did while the font was still
+        // loading — only safe while the canvas is still untouched.
+        if (!this.cleared && !this.hasProgress) this._paintBase();
+      });
+    }
 
     window.addEventListener('resize', this._handleResize);
   }
@@ -275,6 +290,7 @@ class ScratchCanvas {
   }
 
   _scratchAt(x, y) {
+    this.hasProgress = true;
     const { ctx } = this;
     ctx.globalCompositeOperation = 'destination-out';
     ctx.beginPath();
@@ -288,6 +304,7 @@ class ScratchCanvas {
       this._scratchAt(to.x, to.y);
       return;
     }
+    this.hasProgress = true;
     const { ctx } = this;
     ctx.globalCompositeOperation = 'destination-out';
     ctx.lineCap = 'round';

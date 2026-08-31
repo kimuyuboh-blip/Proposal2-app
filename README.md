@@ -97,6 +97,24 @@ Accessibility notes:
   starts once heartfelt begins) rather than all at once on page 1 mount —
   so the initial load only has to fetch the instructions audio, keeping
   first paint fast on mobile connections.
+- **Photos ship as WebP with a JPEG fallback** via `image-set()` in
+  `css/style.css` (`.photo-memory`, `.photo-loving`, `.photo-us`) — roughly a
+  third the size of the JPEGs at the same visual quality on browsers that
+  support it, with the plain `url(...)` JPEG declaration kept first as the
+  fallback for anything that doesn't.
+- **Pull-to-refresh** (`js/pullToRefresh.js`) is reimplemented from scratch:
+  every scratch canvas sets `touch-action: none` so scratching never scrolls
+  the page, which as a side effect blocks the browser's native swipe-down
+  gesture. A 56px hot zone at the top of the screen detects the same
+  down-drag gesture and reloads the page past a threshold.
+- **Installable as a home-screen app**: `manifest.json` + the
+  `theme-color`/`apple-mobile-web-app-*` meta tags in `index.html` let mobile
+  browsers tint their UI to match the page and offer "Add to Home Screen".
+- **Offline app-shell caching** via `sw.js`: caches the static
+  HTML/CSS/JS/images so a reload on a flaky connection doesn't break the
+  page. Deliberately excludes `assets/audio/*` — `<audio>` elements issue
+  HTTP range requests to seek/buffer, which the Cache API doesn't serve
+  correctly, so audio is left to the network as normal.
 
 ## Customizing
 
@@ -118,9 +136,12 @@ js/app.js                Page navigation, scratch canvas wiring, Yes/No + confet
 js/audioEngine.js        Owns the three <audio> elements and the song-chaining logic
 js/scratchCanvas.js      Reusable scratch-to-reveal canvas component
 js/confettiEffect.js     Thin wrapper around the vendored confetti library
+js/pullToRefresh.js      Custom swipe-down-to-refresh gesture
 js/vendor/               Vendored third-party scripts (confetti)
-assets/images/           Photos used on pages 2-4
+assets/images/           Photos used on pages 2-4, WebP variants, and app icons
 assets/audio/            Voice notes + background song
+manifest.json            Web app manifest (installable home-screen app)
+sw.js                    Service worker — offline app-shell caching
 ```
 
 ## Browser support

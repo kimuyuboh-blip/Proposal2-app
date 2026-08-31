@@ -2,8 +2,21 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>For You</title>
+<meta name="theme-color" content="#1a1014">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="For You">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+<link rel="icon" href="assets/images/icon-192.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="For You">
+<meta property="og:description" content="A little something for you to scratch, listen to, and reveal.">
+<meta property="og:image" content="https://kimuyuboh-blip.github.io/Proposal2-app/assets/images/loving.jpeg">
+<meta property="og:url" content="https://kimuyuboh-blip.github.io/Proposal2-app/">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -40,7 +53,7 @@
 
   <!-- PAGE 2 : Photo + Text Hybrid -->
   <section class="page" id="page-2" data-page="2">
-    <div class="page-inner page-inner--photo" style="background-image: url('assets/images/photo1.jpg');">
+    <div class="page-inner page-inner--photo photo-memory">
       <div class="photo-overlay"></div>
       <div class="reveal-content reveal-content--memory">
         <p class="eyebrow">a memory, just for you</p>
@@ -61,7 +74,7 @@
   <!-- PAGE 3 : The Layered Reveal -->
   <section class="page" id="page-3" data-page="3">
     <div class="page-inner page-inner--dark page-inner--text-left">
-      <div class="bg-photo" style="background-image: url('assets/images/loving.jpeg');"></div>
+      <div class="bg-photo photo-loving"></div>
       <div class="photo-overlay photo-overlay--edge" aria-hidden="true"></div>
       <div class="reveal-content reveal-content--quote reveal-content--side reveal-content--align-start">
         <p class="quote-mark" aria-hidden="true">&#8220;</p>
@@ -82,7 +95,7 @@
   <!-- PAGE 4 : The Bold Question & Proposal -->
   <section class="page" id="page-4" data-page="4">
     <div class="page-inner page-inner--dark page-inner--final page-inner--text-right">
-      <div class="bg-photo" style="background-image: url('assets/images/us.jpeg');"></div>
+      <div class="bg-photo photo-us"></div>
       <div class="photo-overlay photo-overlay--edge" aria-hidden="true"></div>
       <div class="reveal-content reveal-content--question reveal-content--side reveal-content--align-end" id="question-content">
         <p class="question-text">Will you officially be<br>my girlfriend?</p>
@@ -95,7 +108,7 @@
       <div class="reveal-content reveal-content--victory reveal-content--side reveal-content--align-end" id="victory-content" hidden>
         <p class="victory-emoji" aria-hidden="true">&#10084;</p>
         <p class="victory-text">She said yes.</p>
-        <p class="victory-signoff">August 16 I met the love of my life for our first date.</p>
+        <p class="victory-signoff">August 16 I met the love of my life for our first date.<br>On September 5th 2026 she became my girlfriend.</p>
       </div>
 
       <canvas class="scratch-canvas" id="scratch-4" data-shimmer="true"></canvas>
@@ -118,8 +131,18 @@
   <span class="page-dot" data-dot="4"></span>
 </nav>
 
+<!-- Pull-to-refresh indicator. The page locks scrolling and every scratch
+     canvas sets touch-action:none so scratching works reliably on mobile,
+     which as a side effect blocks the browser's native swipe-down-to-refresh
+     gesture. This reimplements it: pulling down from a strip at the very
+     top of the screen (js/pullToRefresh.js) reloads the page. -->
+<div class="ptr-indicator" id="ptr-indicator" aria-hidden="true">
+  <span class="ptr-indicator__icon">&#8595;</span>
+</div>
+
 <script src="js/vendor/confetti.browser.min.js"></script>
 <script src="js/audioEngine.js"></script>
+<script src="js/pullToRefresh.js"></script>
 <script src="js/scratchCanvas.js"></script>
 <script src="js/confettiEffect.js"></script>
 <script src="js/app.js"></script>

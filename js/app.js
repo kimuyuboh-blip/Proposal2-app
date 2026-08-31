@@ -22,7 +22,11 @@
    *  playback starts so it doesn't compete for bandwidth with the initial
    *  page load and the instructions audio the visitor needs immediately. */
   function warmImageCache() {
-    ['assets/images/photo1.jpg', 'assets/images/loving.jpeg', 'assets/images/us.jpeg'].forEach((src) => {
+    // Warms the WebP variants — what every modern mobile/desktop browser
+    // actually ends up painting (see the image-set() rules in style.css);
+    // the JPEG fallback only matters for the rare browser without WebP
+    // decode support, so it's not worth spending bandwidth prefetching it.
+    ['assets/images/photo1.webp', 'assets/images/loving.webp', 'assets/images/us.webp'].forEach((src) => {
       const img = new Image();
       img.src = src;
     });
@@ -176,4 +180,13 @@
 
   // Start on page 1.
   goToPage(1);
+
+  // Registered after 'load' so it can't compete with the critical first
+  // paint/instructions-audio fetch; caches the static app shell so a
+  // pull-to-refresh (or just a flaky connection) doesn't break the page.
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    });
+  }
 })();
