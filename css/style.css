@@ -57,6 +57,10 @@ button {
   position: relative;
   width: 100vw;
   height: 100vh;
+  /* Falls back to 100vh above on browsers without dvh support; dvh tracks
+     the real visible viewport as mobile browser chrome (address bar) shows
+     or hides, instead of the fixed layout viewport 100vh uses. */
+  height: 100dvh;
   overflow: hidden;
 }
 
@@ -114,11 +118,6 @@ button {
   background-repeat: no-repeat;
 }
 
-.bg-photo--contain {
-  background-size: contain;
-  background-position: center;
-}
-
 .photo-overlay {
   position: absolute;
   inset: 0;
@@ -129,6 +128,23 @@ button {
     rgba(20, 10, 14, 0.88) 100%
   );
   z-index: 1;
+}
+
+/* A soft vignette on the side the text sits over, so it stays legible
+   against a full-bleed cover photo regardless of what's cropped in on a
+   given screen size — the photo itself is never shrunk to "fit" (that's
+   what left the gap/letterbox bug on pages 3-4), it always fills the
+   screen and this scrim does the legibility work instead. */
+.photo-overlay--edge {
+  pointer-events: none;
+}
+
+.page-inner--text-left .photo-overlay--edge {
+  background: linear-gradient(to right, rgba(10, 6, 8, 0.72) 0%, rgba(10, 6, 8, 0.32) 40%, transparent 75%);
+}
+
+.page-inner--text-right .photo-overlay--edge {
+  background: linear-gradient(to left, rgba(10, 6, 8, 0.72) 0%, rgba(10, 6, 8, 0.32) 40%, transparent 75%);
 }
 
 /* ==========================================================================
@@ -525,8 +541,7 @@ button {
     margin: 0 5%;
   }
 
-  .page-inner--photo,
-  .bg-photo {
+  .page-inner--photo {
     background-position: top center;
   }
 
