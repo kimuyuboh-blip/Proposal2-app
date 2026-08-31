@@ -37,9 +37,23 @@ class ScratchCanvas {
     this._attachEvents();
     this._makeKeyboardAccessible();
 
-    if (this.shimmer && !this.prefersReducedMotion) this._startShimmerLoop();
-
     window.addEventListener('resize', this._handleResize);
+  }
+
+  /** Resumes the shimmer loop; no-ops once cleared or if shimmer is disabled. */
+  resumeShimmer() {
+    if (this.cleared || !this.shimmer || this.prefersReducedMotion || this.rafId) return;
+    this._startShimmerLoop();
+  }
+
+  /** Pauses the shimmer loop without clearing progress — for canvases on
+   *  pages the visitor isn't currently viewing, so they don't burn main-
+   *  thread time (and battery) redrawing something nobody can see. */
+  pauseShimmer() {
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
   }
 
   _bindHandlers() {

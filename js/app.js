@@ -17,16 +17,31 @@
     if (navigator.vibrate) navigator.vibrate(pattern);
   }
 
-  // Warm the image cache for later pages while the visitor is still on
-  // page 1, so backgrounds don't pop in right as a scratch reveal finishes.
-  ['assets/images/photo1.jpg', 'assets/images/loving.jpeg', 'assets/images/us.jpeg'].forEach((src) => {
-    const img = new Image();
-    img.src = src;
-  });
+  /** Warms the image cache for later pages so backgrounds don't pop in
+   *  right as a scratch reveal finishes. Deferred until instructions
+   *  playback starts so it doesn't compete for bandwidth with the initial
+   *  page load and the instructions audio the visitor needs immediately. */
+  function warmImageCache() {
+    ['assets/images/photo1.jpg', 'assets/images/loving.jpeg', 'assets/images/us.jpeg'].forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }
+
+  // Shimmering scratch canvases are registered here (page number -> instance)
+  // so goToPage() can pause the loop everywhere except the active page.
+  const shimmerCanvases = {};
 
   function goToPage(pageNumber) {
     pages.forEach((section) => {
       section.classList.toggle('active', Number(section.dataset.page) === pageNumber);
+    });
+    Object.entries(shimmerCanvases).forEach(([page, instance]) => {
+      if (Number(page) === pageNumber) {
+        instance.resumeShimmer();
+      } else {
+        instance.pauseShimmer();
+      }
     });
     replayBtn.hidden = pageNumber < 2;
     requestAnimationFrame(() => replayBtn.classList.toggle('is-visible', pageNumber >= 2));
@@ -60,6 +75,7 @@
     playMeBtn.classList.add('is-playing');
     playMeBtn.querySelector('.btn__label').textContent = 'Playing…';
     instructionsHint.textContent = 'Listen closely…';
+    warmImageCache();
     AudioEngine.playInstructions().catch(() => {
       // Autoplay blocked (e.g. the scratch gesture didn't count as
       // direct user activation) — reset so the button tap can retry, and
@@ -105,7 +121,7 @@
   // Page 2 — photo + memory
   // ---------------------------------------------------------------------
   const nextBtn2 = document.getElementById('next-btn-2');
-  new ScratchCanvas(document.getElementById('scratch-2'), {
+  shimmerCanvases[2] = new ScratchCanvas(document.getElementById('scratch-2'), {
     shimmer: true,
     threshold: 0.8,
     onThreshold: () => {
@@ -120,7 +136,7 @@
   // Page 3 — layered quote reveal
   // ---------------------------------------------------------------------
   const nextBtn3 = document.getElementById('next-btn-3');
-  new ScratchCanvas(document.getElementById('scratch-3'), {
+  shimmerCanvases[3] = new ScratchCanvas(document.getElementById('scratch-3'), {
     shimmer: true,
     threshold: 0.8,
     onThreshold: () => {
@@ -139,7 +155,7 @@
   const victoryContent = document.getElementById('victory-content');
   const yesBtn = document.getElementById('yes-btn');
 
-  new ScratchCanvas(document.getElementById('scratch-4'), {
+  shimmerCanvases[4] = new ScratchCanvas(document.getElementById('scratch-4'), {
     shimmer: true,
     threshold: 0.8,
     onThreshold: () => {

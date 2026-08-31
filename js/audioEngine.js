@@ -43,6 +43,11 @@ const AudioEngine = (() => {
 
   function playInstructions() {
     instructions.currentTime = 0;
+    // Give the heartfelt track the ~44s of instructions playback as a
+    // buffering head start, instead of competing with instructions.m4a for
+    // bandwidth at page load — that's what was making it start silently late.
+    heartfelt.preload = 'auto';
+    heartfelt.load();
     return instructions.play();
   }
 
@@ -59,6 +64,10 @@ const AudioEngine = (() => {
     if (heartfeltStarted) return Promise.resolve(true);
     heartfeltStarted = true;
     heartfelt.currentTime = 0;
+    // The heartfelt track runs ~2.5 minutes — plenty of runway to fetch the
+    // song in the background well before it's actually needed.
+    song.preload = 'auto';
+    song.load();
     return heartfelt.play().then(
       () => true,
       () => {

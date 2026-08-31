@@ -484,7 +484,7 @@ button {
    ========================================================================== */
 .page-dots {
   position: fixed;
-  bottom: 1.25rem;
+  bottom: calc(8% + 3.25rem);
   left: 50%;
   z-index: 60;
   display: flex;
@@ -517,6 +517,30 @@ button {
 .scratch-canvas:focus-visible {
   outline: 2px solid var(--color-gold-light);
   outline-offset: -4px;
+}
+
+@media (max-width: 600px) {
+  .reveal-content--side {
+    max-width: min(88vw, 420px);
+    margin: 0 5%;
+  }
+
+  .page-inner--photo,
+  .bg-photo {
+    background-position: top center;
+  }
+
+  .memory-text {
+    font-size: clamp(1.15rem, 5vw, 1.6rem);
+  }
+
+  .quote-text {
+    font-size: clamp(1.25rem, 5.5vw, 1.8rem);
+  }
+
+  .question-text {
+    font-size: clamp(1.5rem, 7vw, 2.2rem);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

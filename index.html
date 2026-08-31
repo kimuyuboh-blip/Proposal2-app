@@ -15,8 +15,8 @@
      so navigating between "pages" (just show/hide of sections) never
      recreates or restarts them. -->
 <audio id="instructions-audio" src="assets/audio/instructions.m4a" preload="auto"></audio>
-<audio id="heartfelt-audio" src="assets/audio/heartfelt_message.m4a" preload="auto"></audio>
-<audio id="song-audio" src="assets/audio/song.mp3" preload="auto"></audio>
+<audio id="heartfelt-audio" src="assets/audio/heartfelt_message.m4a" preload="none"></audio>
+<audio id="song-audio" src="assets/audio/song.mp3" preload="none"></audio>
 
 <main id="app">
 
@@ -81,7 +81,7 @@
   <!-- PAGE 4 : The Bold Question & Proposal -->
   <section class="page" id="page-4" data-page="4">
     <div class="page-inner page-inner--dark page-inner--final page-inner--text-right">
-      <div class="bg-photo" style="background-image: url('assets/images/us.jpeg');"></div>
+      <div class="bg-photo bg-photo--contain" style="background-image: url('assets/images/us.jpeg');"></div>
       <div class="reveal-content reveal-content--question reveal-content--side reveal-content--align-end" id="question-content">
         <p class="question-text">Will you officially be<br>my girlfriend?</p>
         <div class="question-buttons" id="question-buttons" hidden>

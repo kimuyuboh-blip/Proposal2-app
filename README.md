@@ -91,8 +91,12 @@ Accessibility notes:
   rule in `css/style.css` ensures elements toggled via the `hidden` attribute
   are actually removed from layout/tab order, even where a class on the same
   element also sets `display`.
-- Background images for pages 2–4 are preloaded as soon as page 1 mounts, so
-  they don't pop in mid-reveal.
+- Background images for pages 2–4, and the `heartfelt`/`song` audio tracks,
+  are preloaded in stages tied to playback (image warm-up + heartfelt
+  buffering start together with the instructions voice note; song buffering
+  starts once heartfelt begins) rather than all at once on page 1 mount —
+  so the initial load only has to fetch the instructions audio, keeping
+  first paint fast on mobile connections.
 
 ## Customizing
 
